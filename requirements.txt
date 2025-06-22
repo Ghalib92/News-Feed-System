@@ -1,0 +1,5 @@
+django
+requestS
+pillow
+psycopg2
+django-jazzmin
