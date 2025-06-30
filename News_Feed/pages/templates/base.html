@@ -44,8 +44,17 @@
             display: flex;
             min-height: 100vh;
         }
-
+        
         /* Sidebar Styles */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        body.sidebar-open .sidebar {
+            transform: translateX(0);
+        }
+
         .sidebar {
             width: var(--sidebar-width);
             background-color: white;
@@ -179,9 +188,13 @@
             font-size: 20px;
             color: var(--dark);
             cursor: pointer;
-            display: none;
+           
         }
-
+        @media (max-width: 768px) {
+    .toggle-sidebar {
+        display: block;
+    }
+    }
         .search-bar {
             flex: 1;
             max-width: 500px;
@@ -654,7 +667,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-2">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
@@ -779,6 +792,8 @@
         </aside>
 
         <!-- Main Content -->
+
+        
         <main class="main-content" id="main-content">
             <!-- Top Navigation -->
             <nav class="top-nav">
@@ -833,61 +848,60 @@
 
 
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleBtn = document.getElementById("toggle-sidebar");
+    const closeBtn = document.getElementById("close-sidebar");
+    const sidebar = document.getElementById("sidebar");
 
-
-
-    <script>
-        // Toggle Sidebar
-        const toggleSidebar = document.getElementById('toggle-sidebar');
-        const closeSidebar = document.getElementById('close-sidebar');
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('main-content');
-
-        toggleSidebar.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-        });
-
-        closeSidebar.addEventListener('click', () => {
-            sidebar.classList.remove('open');
-        });
-
-        // Close sidebar when clicking outside
-        mainContent.addEventListener('click', () => {
-            if (window.innerWidth < 992) {
-                sidebar.classList.remove('open');
-            }
-        });
-
-        // Responsive adjustments
-        function handleResize() {
-            if (window.innerWidth >= 992) {
-                sidebar.classList.remove('open');
-            }
-        }
-
-        window.addEventListener('resize', handleResize);
-
-        // Simulate loading active menu item
-       const menuLinks = document.querySelectorAll('.menu-link');
-
-menuLinks.forEach(link => {
-    const href = link.getAttribute('href');
-    if (window.location.pathname === href) {
-        link.classList.add('active');
+    // Check if elements exist before using them
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", function () {
+        document.body.classList.add("sidebar-open");
+      });
     }
-});
 
-        // Simulate notification click
-        const notificationBtn = document.querySelector('.notification-btn');
-        notificationBtn.addEventListener('click', () => {
-            notificationBtn.querySelector('.notification-badge').textContent = '0';
-        });
+    if (closeBtn) {
+      closeBtn.addEventListener("click", function () {
+        document.body.classList.remove("sidebar-open");
+      });
+    }
 
-        // Simulate message click
-        const messageBtn = document.querySelector('.message-btn');
-        messageBtn.addEventListener('click', () => {
-            messageBtn.querySelector('.message-badge').textContent = '0';
-        });
-    </script>
+    // Close when clicking outside the sidebar
+    document.addEventListener("click", function (event) {
+      const isInsideSidebar = sidebar?.contains(event.target);
+      const isToggleButton = toggleBtn?.contains(event.target);
+      const isCloseButton = closeBtn?.contains(event.target);
+
+      if (!isInsideSidebar && !isToggleButton && !isCloseButton) {
+        document.body.classList.remove("sidebar-open");
+      }
+    });
+
+    // Fix: Only run this if menuLinks is defined
+    const menuLinks = document.querySelectorAll('.menu-link');
+    menuLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (window.location.pathname === href) {
+        link.classList.add('active');
+      }
+    });
+
+    // Notification badge reset
+    const notificationBtn = document.querySelector('.notification-btn');
+    notificationBtn?.addEventListener('click', () => {
+      const badge = notificationBtn.querySelector('.notification-badge');
+      if (badge) badge.textContent = '0';
+    });
+
+    // Message badge reset
+    const messageBtn = document.querySelector('.message-btn');
+    messageBtn?.addEventListener('click', () => {
+      const badge = messageBtn.querySelector('.message-badge');
+      if (badge) badge.textContent = '0';
+    });
+  });
+</script>
+
 </body>
 </html>
