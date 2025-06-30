@@ -91,9 +91,58 @@ def category_posts(request, category_name):
         'category': category_name.replace('_', ' ').title()
     })
 
-
-
+from .models import NewsPost, Like, Comment, SavedPost
+from django.http import JsonResponse
 def read_more(request, slug):
-    post = get_object_or_404 (NewsPost, slug=slug)
-    return render (request, 'read-more.html', {'post':post})
+    post = get_object_or_404(NewsPost, slug=slug)
+    comments = post.comments.all()
+    likes_count = post.likes.count()
+    is_liked = post.likes.filter(user=request.user).exists() if request.user.is_authenticated else False
+    is_saved = post.saves.filter(user=request.user).exists() if request.user.is_authenticated else False
+    return render(request, 'read-more.html', {
+        'post': post,
+        'comments': comments,
+        'likes_count': likes_count,
+        'is_liked': is_liked,
+        'is_saved': is_saved,
+    })
 
+@login_required
+def toggle_like(request, post_id):
+    post = get_object_or_404(NewsPost, id=post_id)
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
+    if not created:
+        like.delete()
+        liked = False
+    else:
+        liked = True
+    return JsonResponse({'liked': liked, 'count': post.likes.count()})
+
+@login_required
+def toggle_save(request, post_id):
+    post = get_object_or_404(NewsPost, id=post_id)
+    saved, created = SavedPost.objects.get_or_create(user=request.user, post=post)
+    if not created:
+        saved.delete()
+        is_saved = False
+    else:
+        is_saved = True
+    return JsonResponse({'saved': is_saved})
+
+@login_required
+def add_comment(request, post_id):
+    if request.method == 'POST':
+        text = request.POST.get('comment')
+        post = get_object_or_404(NewsPost, id=post_id)
+        Comment.objects.create(user=request.user, post=post, text=text)
+    return redirect('read_more', slug=post.slug)
+
+@login_required
+def liked_posts(request):
+    liked_posts = NewsPost.objects.filter(likes__user=request.user)
+    return render(request, 'liked-posts.html', {'posts': liked_posts})
+
+@login_required
+def saved_posts(request):
+    saved_posts = NewsPost.objects.filter(saves__user=request.user)
+    return render(request, 'saved-posts.html', {'posts': saved_posts})

@@ -30,6 +30,8 @@
             box-sizing: border-box;
         }
 
+        
+
         body {
             font-family: 'Poppins', sans-serif;
             color: var(--dark);
@@ -689,11 +691,20 @@
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="#" class="menu-link">
+                        <a href="{% url 'saved_posts' %}" class="menu-link">
                             <span class="menu-icon"><i class="fas fa-bookmark"></i></span>
                             <span class="menu-text">Saved</span>
                         </a>
                     </li>
+
+                   <li class="menu-item">
+                         <a href="{% url 'liked_posts' %}" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-bookmark"></i></span>
+                            <span class="menu-text">Liked</span>
+                        </a>
+                    </li>
+
+
                     <li class="menu-item">
                         <a href="#" class="menu-link">
                             <span class="menu-icon"><i class="fas fa-bell"></i></span>
@@ -706,7 +717,7 @@
                 <h3 class="menu-title">Categories</h3>
                 <ul class="menu-items">
                     <li class="menu-item">
-                        <a href="#" class="menu-link">
+                         <a href="{% url 'posts' %}" class="menu-link">
                             <span class="menu-icon"><i class="fas fa-globe"></i></span>
                             <span class="menu-text">World</span>
                         </a>

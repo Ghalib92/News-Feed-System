@@ -1,0 +1,344 @@
+{% extends 'base.html' %}
+{% load static %}
+
+ 
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+ 
+
+{% block content %}
+<div class="container-fluid">
+  <h2>Posts You've Liked</h2>
+  
+  {% for post in posts %}
+    <div class="news-card">
+      <div class="news-card-inner">
+        {% if post.image %}
+        <div class="news-image-container">
+          <img src="{{ post.image.url }}" class="news-image" alt="{{ post.title }}">
+          <div class="news-category-badge">{{ post.get_category_display }}</div>
+        </div>
+        {% endif %}
+        
+        <div class="news-card-content">
+          <div class="news-meta">
+            <span class="news-author">{{ post.author }}</span>
+            <span class="news-date">{{ post.created_at|date:"M d, Y" }}</span>
+          </div>
+          
+          <h3 class="news-card-title">{{ post.title }}</h3>
+          
+          <p class="news-excerpt">{{ post.content|truncatewords:20 }}</p>
+          
+          <div class="news-actions">
+            <a href="{% url 'read_more' post.slug %}" class="news-read-more">
+              Read More
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <div class="news-social">
+              <button class="news-social-btn" title="Save for later">
+                <i class="far fa-bookmark"></i>
+              </button>
+              <button class="news-social-btn" title="Share" onclick="navigator.share({ title: '{{ post.title }}', url: '{% url 'read_more' post.slug %}' })">
+                <i class="far fa-share-square"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="empty-state">
+      <p>You haven't liked any posts yet.</p>
+      <a href="{% url 'posts' %}">Explore Posts</a>
+    </div>
+  {% endfor %}
+</div>
+ 
+
+ 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add save functionality
+    document.querySelectorAll('.news-social-btn .fa-bookmark').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const postCard = this.closest('.news-card');
+        const postId = postCard.dataset.postId; // You would need to add data-post-id to each card
+        
+        // Here you would add your save functionality
+        // Similar to the like functionality in the previous example
+        
+        // Toggle icon
+        if (this.classList.contains('far')) {
+          this.classList.remove('far');
+          this.classList.add('fas');
+          this.style.color = '#e74c3c';
+        } else {
+          this.classList.remove('fas');
+          this.classList.add('far');
+          this.style.color = '';
+        }
+      });
+    });
+  });
+</script>
+<style>
+  :root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --text-color: #333;
+    --text-light: #7f8c8d;
+    --white: #ffffff;
+    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+  }
+ 
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--primary-color);
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+  }
+
+  h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--secondary-color);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+    margin: 40px 0;
+  }
+
+  .empty-state p {
+    font-size: 1.1rem;
+    color: var(--dark-gray);
+    margin-bottom: 20px;
+  }
+
+  .empty-state a {
+    display: inline-block;
+    padding: 10px 25px;
+    background: var(--secondary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition);
+  }
+
+  .empty-state a:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+  }
+
+  .news-card {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    margin-bottom: 30px;
+    transition: var(--transition);
+  }
+
+  .news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .news-card-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .news-image-container {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+  }
+
+  .news-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .news-card:hover .news-image {
+    transform: scale(1.03);
+  }
+
+  .news-category-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--accent-color);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .news-card-content {
+    padding: 25px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .news-meta {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+
+  .news-author {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-right: 15px;
+  }
+
+  .news-date {
+    display: flex;
+    align-items: center;
+  }
+
+  .news-date::before {
+    content: '•';
+    margin-right: 10px;
+    color: var(--medium-gray);
+  }
+
+  .news-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin: 0 0 15px 0;
+    color: var(--primary-color);
+    line-height: 1.4;
+  }
+
+  .news-excerpt {
+    color: var(--text-color);
+    margin-bottom: 20px;
+    line-height: 1.7;
+    font-family: 'Source Sans Pro', sans-serif;
+    flex-grow: 1;
+  }
+
+  .news-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--medium-gray);
+  }
+
+  .news-read-more {
+    display: inline-flex;
+    align-items: center;
+    color: var(--secondary-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+  }
+
+  .news-read-more svg {
+    margin-left: 8px;
+    transition: var(--transition);
+  }
+
+  .news-read-more:hover {
+    color: #2980b9;
+  }
+
+  .news-read-more:hover svg {
+    transform: translateX(3px);
+  }
+
+  .news-social {
+    display: flex;
+    gap: 10px;
+  }
+
+  .news-social-btn {
+    background: none;
+    border: none;
+    color: var(--dark-gray);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .news-social-btn:hover {
+    background: var(--light-gray);
+    color: var(--primary-color);
+  }
+
+  .fa-bookmark:hover {
+    color: var(--accent-color);
+  }
+
+  .fa-share-square:hover {
+    color: var(--secondary-color);
+  }
+
+  @media (min-width: 768px) {
+    .news-card-inner {
+      flex-direction: row;
+    }
+
+    .news-image-container {
+      width: 40%;
+      height: auto;
+    }
+
+    .news-card-content {
+      width: 60%;
+      padding: 30px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    h2 {
+      font-size: 1.8rem;
+    }
+
+    .news-card-title {
+      font-size: 1.3rem;
+    }
+  }
+</style>
+{% endblock %}

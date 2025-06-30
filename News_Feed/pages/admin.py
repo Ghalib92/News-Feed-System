@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import NewsPost
+from .models import NewsPost,Like, Comment, SavedPost
 # Register your models here.
 
 @admin.register(NewsPost)
@@ -9,3 +9,12 @@ class NewsPostAdmin(admin.ModelAdmin):
     search_fields = ('title', 'content')
     prepopulated_fields = {'slug': ('title',)}
     ordering = ('-created_at',)
+
+admin.site.register(Like)
+admin.site.register(Comment)
+admin.site.register(SavedPost)
+
+
+
+
+ 
