@@ -1,8 +1,9 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django .contrib.auth.models import User, auth
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from.models import  NewsPost
 # Create your views here.
 def home(request):
     return render(request, 'index.html')
@@ -75,4 +76,24 @@ def dashboard(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect('login') 
+    return redirect('login')
+
+def posts(request):
+    posts =  NewsPost.objects.all()
+    return render(request, 'posts.html',{'posts':posts, 'post_count': posts.count()})
+
+
+
+def category_posts(request, category_name):
+    posts = NewsPost.objects.filter(category=category_name, is_published=True).order_by('-created_at')
+    return render(request, 'category.html', {
+        'posts': posts,
+        'category': category_name.replace('_', ' ').title()
+    })
+
+
+
+def read_more(request, slug):
+    post = get_object_or_404 (NewsPost, slug=slug)
+    return render (request, 'read-more.html', {'post':post})
+
