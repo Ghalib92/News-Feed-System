@@ -1,7 +1,152 @@
-{% extends 'base.html' %}
+ {% extends 'base.html' %}
 {% block content %}
+
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --dark-bg: #f6f6fd;
+        --card-bg: rgba(255, 255, 255, 0.05);
+        --text-light: rgba(255, 255, 255, 0.9);
+        --text-lighter: rgba(255, 255, 255, 0.7);
+        --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.3);
+        --shadow-sm: 0 5px 15px rgba(0, 0, 0, 0.1);
+        --border-radius: 12px;
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    body {
+        background: white;
+        color: black;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .container.py-5 {
+        padding-top: 3rem !important;
+        padding-bottom: 3rem !important;
+    }
+
+    h2 {
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        margin-bottom: 2rem !important;
+        color: black;
+        position: relative;
+        display: inline-block;
+    }
+
+    h2:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 50px;
+        height: 4px;
+        background: var(--primary-gradient);
+        border-radius: 2px;
+    }
+
+    .card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--border-radius) !important;
+        transition: var(--transition);
+        overflow: hidden;
+        position: relative;
+        color: black;
+    }
+
+    .card:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--primary-gradient);
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .card h5 {
+        font-weight: 600;
+        font-size: 1rem;
+        color: black;
+        margin-bottom: 1rem;
+        letter-spacing: 0.5px;
+    }
+
+    .card p {
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-bottom: 0;
+        color: rgb(7, 1, 1);
+    }
+
+    .card.shadow {
+        box-shadow: var(--shadow-sm) !important;
+    }
+
+    .row.g-4 {
+        margin-bottom: 2rem;
+    }
+
+    .img-fluid {
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-lg);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Special styling for the chart card */
+    .card.text-center {
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .card.text-center h5 {
+        font-size: 1.2rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .card p {
+            font-size: 1.2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+        }
+    }
+
+    /* Animation for cards */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+        animation: fadeIn 0.6s ease forwards;
+    }
+
+    /* Delay animations for staggered effect */
+    .col-md-6:nth-child(1) .card { animation-delay: 0.1s; }
+    .col-md-6:nth-child(2) .card { animation-delay: 0.2s; }
+    .col-md-6:nth-child(3) .card { animation-delay: 0.3s; }
+    .col-md-6:nth-child(4) .card { animation-delay: 0.4s; }
+    .col-md-6:nth-child(5) .card { animation-delay: 0.5s; }
+    .col-md-6:nth-child(6) .card { animation-delay: 0.6s; }
+    .col-md-6:nth-child(7) .card { animation-delay: 0.7s; }
+    .col-md-6:nth-child(8) .card { animation-delay: 0.8s; }
+    .col-12:nth-child(9) .card { animation-delay: 0.9s; }
+    .col-12:nth-child(10) .card { animation-delay: 1s; }
+</style>
+ <h2 class="mb-4">📊 System Analytics Report</h2>
 <div class="container py-5">
-  <h2 class="mb-4">📊 System Analytics Report</h2>
+ 
   <div class="row g-4">
     <div class="col-md-6">
       <div class="card p-4 shadow">
@@ -67,4 +212,9 @@
     </div>
   </div>
 </div>
+
+<!-- Add this before </body> in your base.html for best results -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/your-code.js" crossorigin="anonymous"></script>
+
 {% endblock %}

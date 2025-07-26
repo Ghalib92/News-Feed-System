@@ -200,6 +200,11 @@ from collections import Counter
 from django.db.models import Count
 import matplotlib.pyplot as plt
 import os
+import os
+import matplotlib
+matplotlib.use('Agg')  # Prevent Tkinter-related errors
+import matplotlib.pyplot as plt
+
 
 def generate_analytics():
     users = User.objects.all()

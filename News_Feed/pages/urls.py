@@ -2,6 +2,13 @@ from django.urls import path
 from . import views 
 from django.conf import settings
 from django.conf.urls.static import static
+import os
+ 
+from django.urls import reverse_lazy
+
+
+
+
 
 urlpatterns = [
 
@@ -26,6 +33,16 @@ urlpatterns = [
 
 ]
 
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Serve media files in development mode
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=os.path.join(BASE_DIR, 'static'))
+
