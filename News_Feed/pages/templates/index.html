@@ -10,6 +10,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
+
+
+
+
+
         :root {
             --primary: #1e293b;
             --primary-dark: #1d4ed8;
@@ -762,6 +767,243 @@
                 width: 100%;
             }
         }
+  :root {
+ 
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .news-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  .news-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .news-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .news-subtitle {
+    font-size: 1.125rem;
+    color: var(--gray);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  .news-card {
+    position: relative;
+    transition: var(--transition);
+  }
+
+  .news-card-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+  }
+
+  .news-card:hover .news-card-inner {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .news-image-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+  }
+
+  .news-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+  }
+
+  .news-card:hover .news-image {
+    transform: scale(1.05);
+  }
+
+  .news-category-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: var(--primary);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .news-card-content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .news-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .news-author {
+    color: var(--primary);
+    font-weight: 500;
+  }
+
+  .news-date {
+    color: var(--gray);
+  }
+
+  .news-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+
+  .news-excerpt {
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+    flex: 1;
+  }
+
+  .news-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .news-read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary);
+    font-weight: 500;
+    text-decoration: none;
+    transition: var(--transition);
+  }
+
+  .news-read-more:hover {
+    color: var(--primary-dark);
+  }
+
+  .news-read-more svg {
+    transition: var(--transition);
+  }
+
+  .news-read-more:hover svg {
+    transform: translateX(3px);
+  }
+
+  .news-social {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .news-social-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--gray);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .news-social-btn:hover {
+    background: var(--gray-lighter);
+    color: var(--primary);
+  }
+
+  .news-empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .news-empty-icon {
+    margin-bottom: 1.5rem;
+  }
+
+  .news-empty-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .news-empty-text {
+    color: var(--gray);
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .news-container {
+      padding: 1.5rem 1rem;
+    }
+    
+    .news-title {
+      font-size: 1.75rem;
+    }
+    
+    .news-subtitle {
+      font-size: 1rem;
+    }
+    
+    .news-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .news-image-container {
+      height: 180px;
+    }
+  }
+        
     </style>
 </head>
 <body>
@@ -775,6 +1017,8 @@
                 </a>
                 
                 <div class="nav-links">
+
+                     <a href="#posts">Posts</a>
                     <a href="#features">Features</a>
                     <a href="#categories">Categories</a>
                     <a href="#testimonials">Testimonials</a>
@@ -998,6 +1242,62 @@
         </div>
     </div>
 </section>
+
+
+<section id="posts" class="posts">
+    <div class="container">
+        <div class="section-header fade-in">
+            <h2>Latest Posts</h2>
+            <p>Stay updated with the latest articles from our contributors</p>
+        </div>
+       {% if posts %}
+    <div class="news-grid">
+      {% for post in posts %}
+        <div class="news-card">
+          <div class="news-card-inner">
+            {% if post.image %}
+            <div class="news-image-container">
+              <img src="{{ post.image.url }}" class="news-image" alt="{{ post.title }}">
+              <div class="news-category-badge">Featured</div>
+            </div>
+            {% endif %}
+            
+            <div class="news-card-content">
+              <div class="news-meta">
+                <span class="news-author">{{ post.author }}</span>
+                <span class="news-date">{{ post.created_at|date:"M d, Y" }}</span>
+              </div>
+              
+              <h3 class="news-card-title">{{ post.title }}</h3>
+              
+              <p class="news-excerpt">{{ post.content|truncatewords:20 }}</p>
+              
+              <div class="news-actions">
+                <a href="{% url 'read_more' post.slug %}" class="news-read-more">
+                  Read More
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+                <div class="news-social">
+                  <button class="news-social-btn">
+                    <i class="far fa-bookmark"></i>
+                  </button>
+                  <button class="news-social-btn">
+                    <i class="far fa-share-square"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+</section>
+
+
+
 
     <!-- CTA Section -->
     <section class="cta">

@@ -6,7 +6,8 @@ from django.contrib import messages
 from.models import  NewsPost
 # Create your views here.
 def home(request):
-    return render(request, 'index.html')
+    posts = NewsPost.objects.filter(is_published=True).order_by('-created_at')[:6]  # Get the latest 6 published posts
+    return render(request, 'index.html', {'posts': posts})
 
 def login(request):
     if request.method == 'POST':
@@ -76,14 +77,15 @@ def dashboard(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect('login')
+    return redirect('home')
 
+@login_required
 def posts(request):
     posts =  NewsPost.objects.all()
     return render(request, 'posts.html',{'posts':posts, 'post_count': posts.count()})
 
 
-
+@login_required
 def category_posts(request, category_name):
     posts = NewsPost.objects.filter(category=category_name, is_published=True).order_by('-created_at')
     return render(request, 'category.html', {
@@ -93,6 +95,8 @@ def category_posts(request, category_name):
 
 from .models import NewsPost, Like, Comment, SavedPost
 from django.http import JsonResponse
+
+@login_required
 def read_more(request, slug):
     post = get_object_or_404(NewsPost, slug=slug)
     comments = post.comments.all()
