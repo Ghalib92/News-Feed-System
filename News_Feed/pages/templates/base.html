@@ -801,13 +801,13 @@
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="#" class="menu-link">
+                        <a href="{% url 'category_posts' 'Business' %}" class="menu-link">
                             <span class="menu-icon"><i class="fas fa-chart-line"></i></span>
                             <span class="menu-text">Business</span>
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="#" class="menu-link">
+                        <a href="{% url 'category_posts' 'Technology' %}" class="menu-link">
                             <span class="menu-icon"><i class="fas fa-flask"></i></span>
                             <span class="menu-text">Technology</span>
                         </a>
@@ -819,7 +819,7 @@
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="#" class="menu-link">
+                        <a href="{% url 'category_posts' 'Sports' %}" class="menu-link">
                             <span class="menu-icon"><i class="fas fa-futbol"></i></span>
                             <span class="menu-text">Sports</span>
                         </a>
@@ -834,24 +834,24 @@
 
   <div class="collapse ms-4 mt-2" id="moreCategoriesCollapse">
     <ul class="list-unstyled">
-      <li class="mb-1">
-        <a class="nav-link d-flex align-items-center" href="/category/technology/">
-          <i class="fas fa-microchip me-2 text-primary"></i> Technology
+      <li class="mb-3">
+        <a class="nav-link d-flex align-items-center" href="{% url 'category_posts' 'Politics' %}">
+          <i class="fas fa-microchip me-2 text-primary"></i> Politics
         </a>
       </li>
-      <li class="mb-1">
-        <a class="nav-link d-flex align-items-center" href="/category/science/">
+      <li class="mb-3">
+    <a class="nav-link d-flex align-items-center" href="{% url 'category_posts' 'Entertainment' %}">
           <i class="fas fa-flask me-2 text-success"></i> Science
         </a>
       </li>
-      <li class="mb-1">
-        <a class="nav-link d-flex align-items-center" href="/category/education/">
-          <i class="fas fa-graduation-cap me-2 text-info"></i> Education
+      <li class="mb-3">
+        <a class="nav-link d-flex align-items-center" href="{% url 'category_posts' 'Lifestyle' %}">
+          <i class="fas fa-graduation-cap me-2 text-info"></i> Lifestyle
         </a>
       </li>
-      <li class="mb-1">
-        <a class="nav-link d-flex align-items-center" href="/category/health/">
-          <i class="fas fa-heartbeat me-2 text-danger"></i> Health
+      <li class="mb-3">
+        <a class="nav-link d-flex align-items-center" href="{% url 'category_posts' 'Culture' %}"  >
+          <i class="fas fa-heartbeat me-2 text-danger"></i> Culture
         </a>
       </li>
     </ul>
