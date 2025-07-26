@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4">📊 System Analytics Report</h2>
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card p-4 shadow">
+        <h5>Total Users</h5>
+        <p>{{ total_users }}</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card p-4 shadow">
+        <h5>Users Joined in 24hrs</h5>
+        <p>{{ new_users_24hrs }}</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card p-4 shadow">
+        <h5>Most Liked Post</h5>
+        <p>{{ most_liked_post.title }}</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card p-4 shadow">
+        <h5>Least Liked Post</h5>
+        <p>{{ least_liked_post.title }}</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card p-4 shadow">
+        <h5>Most Saved Post</h5>
+        <p>{{ most_saved_post.title }}</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card p-4 shadow">
+        <h5>Least Saved Post</h5>
+        <p>{{ least_saved_post.title }}</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card p-4 shadow">
+        <h5>Category With Most Likes</h5>
+        <p>{{ category_with_most_likes }}</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card p-4 shadow">
+        <h5>Top Liker</h5>
+        <p>{{ top_liker }}</p>
+        <h5>Top Saver</h5>
+        <p>{{ top_saver }}</p>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="card p-4 shadow">
+        <h5>Dormant Users</h5>
+        <p>{{ dormant_users_count }} users never liked or saved a post.</p>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="card p-4 shadow text-center">
+        <h5>Top 5 Categories by Likes</h5>
+        <img src="{{ chart_path }}" class="img-fluid mt-3" alt="Top categories chart">
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

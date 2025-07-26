@@ -21,6 +21,8 @@ urlpatterns = [
  path('post/<int:post_id>/comment/', views.add_comment, name='add_comment'),
  path('liked/', views.liked_posts, name='liked_posts'),
  path('saved/', views.saved_posts, name='saved_posts'),
+ path('analytics/', views.analytics_view, name='analytics'),
+
 
 ]
 

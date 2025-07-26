@@ -192,6 +192,82 @@ def change_password(request):
     return render(request, 'change_password.html', {'form': form})
 
 
+from django.shortcuts import render
+from django.contrib.auth.models import User
+from django.utils.timezone import now, timedelta
+from .models import NewsPost, Like, SavedPost
+from collections import Counter
+from django.db.models import Count
+import matplotlib.pyplot as plt
+import os
+
+def generate_analytics():
+    users = User.objects.all()
+    posts = NewsPost.objects.all()
+    likes = Like.objects.select_related('post', 'user')
+    saves = SavedPost.objects.select_related('post', 'user')
+
+    now_time = now()
+    past_24hrs = now_time - timedelta(hours=24)
+
+    # Total & recent users
+    total_users = users.count()
+    new_users_24hrs = users.filter(date_joined__gte=past_24hrs).count()
+
+    # Likes and Saves per post
+    post_likes = Like.objects.values('post').annotate(total=Count('id')).order_by('-total')
+    post_saves = SavedPost.objects.values('post').annotate(total=Count('id')).order_by('-total')
+
+    most_liked_post = post_likes.first()
+    least_liked_post = post_likes.last()
+    most_saved_post = post_saves.first()
+    least_saved_post = post_saves.last()
+
+    # Category with most likes
+    category_likes = Like.objects.values('post__category').annotate(total=Count('id')).order_by('-total')
+
+    # Most active users
+    top_likers = Like.objects.values('user__username').annotate(total=Count('id')).order_by('-total')
+    top_savers = SavedPost.objects.values('user__username').annotate(total=Count('id')).order_by('-total')
+
+    # Dormant users
+    liked_users = Like.objects.values_list('user_id', flat=True)
+    saved_users = SavedPost.objects.values_list('user_id', flat=True)
+    active_users = set(list(liked_users) + list(saved_users))
+    dormant_users = users.exclude(id__in=active_users)
+
+    # Generate category bar chart
+    top5 = category_likes[:5]
+    categories = [item['post__category'] for item in top5]
+    values = [item['total'] for item in top5]
+
+    plt.figure(figsize=(10, 5))
+    plt.bar(categories, values, color='darkcyan')
+    plt.title('Top 5 Categories by Likes')
+    plt.ylabel('Likes')
+    plt.xlabel('Category')
+    chart_path = 'static/charts/category_likes.png'
+    os.makedirs(os.path.dirname(chart_path), exist_ok=True)
+    plt.savefig(chart_path)
+    plt.close()
+
+    return {
+        'total_users': total_users,
+        'new_users_24hrs': new_users_24hrs,
+        'most_liked_post': NewsPost.objects.get(id=most_liked_post['post']) if most_liked_post else None,
+        'least_liked_post': NewsPost.objects.get(id=least_liked_post['post']) if least_liked_post else None,
+        'most_saved_post': NewsPost.objects.get(id=most_saved_post['post']) if most_saved_post else None,
+        'least_saved_post': NewsPost.objects.get(id=least_saved_post['post']) if least_saved_post else None,
+        'category_with_most_likes': category_likes[0]['post__category'] if category_likes else None,
+        'top_liker': top_likers[0]['user__username'] if top_likers else None,
+        'top_saver': top_savers[0]['user__username'] if top_savers else None,
+        'dormant_users_count': dormant_users.count(),
+        'chart_path': '/' + chart_path
+    }
+
+def analytics_view(request):
+    analytics = generate_analytics()
+    return render(request, 'analytics.html', analytics)
 
 
 
