@@ -732,6 +732,12 @@
     </style>
 </head>
 <body>
+
+
+
+
+
+
     <div class="container-fluid mt-2">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
@@ -863,9 +869,9 @@
                 <h3 class="menu-title">Account</h3>
                 <ul class="menu-items">
                     <li class="menu-item">
-                        <a href="#" class="menu-link">
+                        <a href="{% url 'profile' %}" class="menu-link">
                             <span class="menu-icon"><i class="fas fa-user"></i></span>
-                            <span class="menu-text">Profile</span>
+                            <span class="menu-text"> Profile</span>
                         </a>
                     </li>
                     <li class="menu-item">
@@ -884,6 +890,7 @@
             </div>
         </aside>
 
+
         <!-- Main Content -->
 
         
@@ -893,8 +900,7 @@
                 <button class="toggle-sidebar" id="toggle-sidebar">
                     <i class="fas fa-bars"></i>
                 </button>
-
-                <div class="search-bar">
+      <div class="search-bar">
                     <i class="fas fa-search search-icon"></i>
                     <input type="text" class="search-input" placeholder="Search for news, topics, or sources...">
                 </div>
