@@ -29,6 +29,8 @@ urlpatterns = [
  path('liked/', views.liked_posts, name='liked_posts'),
  path('saved/', views.saved_posts, name='saved_posts'),
  path('analytics/', views.analytics_view, name='analytics'),
+ path('get-analytics-data/', views.get_analytics_data, name='get_analytics_data'),
+ 
 
 
 ]

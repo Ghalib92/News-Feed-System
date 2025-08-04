@@ -191,35 +191,34 @@ def change_password(request):
         form = PasswordChangeForm(user=request.user)
     return render(request, 'change_password.html', {'form': form})
 
-
+  # Prevent Tkinter-related errors
+ 
 from django.shortcuts import render
-from django.contrib.auth.models import User
-from django.utils.timezone import now, timedelta
-from .models import NewsPost, Like, SavedPost
-from collections import Counter
+from django.utils.timezone import now
+from datetime import timedelta
 from django.db.models import Count
+from django.contrib.auth.models import User
+from .models import NewsPost, Like, SavedPost, Comment
 import matplotlib.pyplot as plt
 import os
-import os
+from django.http import JsonResponse
+
+
 import matplotlib
-matplotlib.use('Agg')  # Prevent Tkinter-related errors
-import matplotlib.pyplot as plt
+matplotlib.use('Agg') 
 
-
-def generate_analytics():
+def generate_base_analytics():
     users = User.objects.all()
-    posts = NewsPost.objects.all()
     likes = Like.objects.select_related('post', 'user')
     saves = SavedPost.objects.select_related('post', 'user')
 
     now_time = now()
     past_24hrs = now_time - timedelta(hours=24)
 
-    # Total & recent users
     total_users = users.count()
     new_users_24hrs = users.filter(date_joined__gte=past_24hrs).count()
+    user_details = users.values('username', 'last_login')
 
-    # Likes and Saves per post
     post_likes = Like.objects.values('post').annotate(total=Count('id')).order_by('-total')
     post_saves = SavedPost.objects.values('post').annotate(total=Count('id')).order_by('-total')
 
@@ -228,20 +227,16 @@ def generate_analytics():
     most_saved_post = post_saves.first()
     least_saved_post = post_saves.last()
 
-    # Category with most likes
     category_likes = Like.objects.values('post__category').annotate(total=Count('id')).order_by('-total')
 
-    # Most active users
     top_likers = Like.objects.values('user__username').annotate(total=Count('id')).order_by('-total')
     top_savers = SavedPost.objects.values('user__username').annotate(total=Count('id')).order_by('-total')
 
-    # Dormant users
     liked_users = Like.objects.values_list('user_id', flat=True)
     saved_users = SavedPost.objects.values_list('user_id', flat=True)
     active_users = set(list(liked_users) + list(saved_users))
     dormant_users = users.exclude(id__in=active_users)
 
-    # Generate category bar chart
     top5 = category_likes[:5]
     categories = [item['post__category'] for item in top5]
     values = [item['total'] for item in top5]
@@ -258,6 +253,7 @@ def generate_analytics():
 
     return {
         'total_users': total_users,
+        'user_details': user_details,
         'new_users_24hrs': new_users_24hrs,
         'most_liked_post': NewsPost.objects.get(id=most_liked_post['post']) if most_liked_post else None,
         'least_liked_post': NewsPost.objects.get(id=least_liked_post['post']) if least_liked_post else None,
@@ -267,12 +263,37 @@ def generate_analytics():
         'top_liker': top_likers[0]['user__username'] if top_likers else None,
         'top_saver': top_savers[0]['user__username'] if top_savers else None,
         'dormant_users_count': dormant_users.count(),
+      
         'chart_path': '/' + chart_path
     }
 
+def generate_time_filtered_analytics(days):
+    now_time = now()
+    start_time = now_time - timedelta(days=days)
+
+    likes = Like.objects.filter(liked_at__gte=start_time)
+    saves = SavedPost.objects.filter(saved_at__gte=start_time)
+    comments = Comment.objects.filter(created_at__gte=start_time)
+
+    most_liked = likes.values('post__title').annotate(total=Count('id')).order_by('-total')[:5]
+    most_commented = comments.values('post__title').annotate(total=Count('id')).order_by('-total')[:5]
+    most_saved = saves.values('post__title').annotate(total=Count('id')).order_by('-total')[:5]
+    category_data = likes.values('post__category').annotate(total=Count('id')).order_by('-total')[:5]
+
+    return {
+        'most_liked': list(most_liked),
+        'most_commented': list(most_commented),
+        'most_saved': list(most_saved),
+        'categories': list(category_data)
+    }
+
+
 def analytics_view(request):
-    analytics = generate_analytics()
+    analytics = generate_base_analytics()
     return render(request, 'analytics.html', analytics)
 
-
+def get_analytics_data(request):
+    days = int(request.GET.get('period', 7))
+    analytics = generate_time_filtered_analytics(days)
+    return JsonResponse(analytics)
 
