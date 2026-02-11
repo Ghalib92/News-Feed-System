@@ -5,28 +5,33 @@ A Django-based news feed application with PostgreSQL database, running in Docker
 ## Quick Start
 
 ### Prerequisites
+
 - Docker & Docker Compose installed
 
 ### Setup
 
 1. **Clone the repository**
+
 ```bash
 git clone <repo-url>
 cd News_Feed
 ```
 
 2. **Create `.env` file**
+
 ```bash
 cp .env.example .env
 # Edit .env with your settings (optional - defaults are provided)
 ```
 
 3. **Start the application**
+
 ```bash
 docker-compose up --build
 ```
 
 4. **Access the application**
+
 - Main app: `http://localhost:8000`
 - Admin panel: `http://localhost:8000/admin`
 
@@ -35,6 +40,7 @@ docker-compose up --build
 See `.env.example` for available configuration options.
 
 ### Default Credentials (for local development)
+
 - Database user: `postgres`
 - Database password: `1234`
 - Django admin: Create via migrations or use `docker-compose exec web python manage.py createsuperuser`
