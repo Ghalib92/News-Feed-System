@@ -1,0 +1,63 @@
+ 
+
+ 
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: news_feed_db
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5432:5432" # Remove this in production, only for local debugging
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    env_file:
+      - .env
+
+  web:
+    build: .
+    container_name: news_feed_web
+    restart: unless-stopped
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=db
+      - DB_PORT=${DB_PORT}
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    # Command with automatic migrations
+    command: >
+      sh -c "
+        python manage.py migrate --noinput &&
+        python manage.py collectstatic --noinput --clear &&
+        gunicorn --bind 0.0.0.0:8000 --workers 3 News_Feed.wsgi:application
+      "
+
+volumes:
+  postgres_data:
+    name: news_feed_postgres_data
+  static_volume:
+    name: news_feed_static_files
+  media_volume:
+    name: news_feed_media_files

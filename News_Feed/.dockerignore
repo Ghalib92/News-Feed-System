@@ -1,0 +1,51 @@
+# Version control
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+.env
+.env.example
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+*.log
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# Django
+*.sqlite3
+db.sqlite3
+/staticfiles/
+/static_collected/
+/media/
+
+# Virtual environment
+venv
+env
+.venv
+.envrc
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Project specific
+News_Feed/local_settings.py
+*.pot
